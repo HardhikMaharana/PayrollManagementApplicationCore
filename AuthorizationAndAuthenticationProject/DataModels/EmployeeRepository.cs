@@ -51,7 +51,51 @@ namespace PayrollManagementApplication.DataModels
             return await _context.Departments.ToListAsync();
 
         }
+        public async Task<Department> GetDepartmentById(int id)
+        {
+            return await _context.Departments.FindAsync(id);
+        }
+
+        public async Task UpdateDepartment(int id, Department model)
+        {
+            // Employee emp=new Employee();
+            var employee = await _context.Departments.FindAsync(id);
+            if (employee == null)
+            {
+                throw new Exception("Department Not Found");
+            }
+            employee.DeptName = model.DeptName;
+            employee.DeptCode = model.DeptCode;
+            employee.UpdatedBy = "Admin";
+            employee.UpdatedOn = DateTime.Now;
+            await _context.SaveChangesAsync();
+            // emp.Name= model.Name;
+
+
+        }
+
+        public async Task DeleteDepartment(int id)
+        {
+            try
+            {
+                var department = await _context.Departments.FindAsync(id);
+                if (department == null)
+                {
+                    throw new Exception("Department Not Found");
+                }
+                _context.Departments.Remove(department);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Department cant be delete");
+
+
+            }
+
+        }
+
 
 
     }
-    }
+}

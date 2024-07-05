@@ -48,5 +48,31 @@ namespace AuthorizationAndAuthenticationProject.Controllers
             return Ok(employeelist);
 
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetDepartmentById([FromRoute] int id)
+        {
+            var department = await _employeeRepository.GetDepartmentById(id);
+            return Ok(department);
+        }
+
+        [HttpPut("{id}")]
+
+        public async Task<IActionResult> UpdateDepartment([FromRoute] int id, [FromBody] Department department)
+        {
+            await _employeeRepository.UpdateDepartment(id, department);
+            return Ok();
+
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteDepartment([FromRoute] int id)
+        {
+            await _employeeRepository.DeleteDepartment(id);
+            return Ok();
+        }
+
+
+
+
     }
 }
