@@ -58,24 +58,24 @@ namespace AuthorizationAndAuthenticationProject.Services
                         await _usermanager.AddToRoleAsync(identityUser, "Admin");
 
                         api.IsSuccessful = true;
-                        api.Message = "User Registered Succcessfully";
+                        api.Message = "Employee Registered Succcessfully";
                         api.StatusCode = 200;
                     }
                     else
                     {
-                        var isUserRolepresent = await _rolemanager.FindByNameAsync("User");
+                        var isUserRolepresent = await _rolemanager.FindByNameAsync("Employee");
 
                         if (isUserRolepresent == null)
                         {
-                            await _rolemanager.CreateAsync(new IdentityRole { Name = "User" });
-                            await _usermanager.AddToRoleAsync(identityUser, "User");
+                            await _rolemanager.CreateAsync(new IdentityRole { Name = "Employee" });
+                            await _usermanager.AddToRoleAsync(identityUser, "Employee");
                         }
                         else
                         {
-                            await _usermanager.AddToRoleAsync(identityUser, "User");
+                            await _usermanager.AddToRoleAsync(identityUser, "Employee");
                         }
                         api.IsSuccessful = true;
-                        api.Message = "User Registered Successfully";
+                        api.Message = "Employee Registered Successfully";
                         api.StatusCode = 200;
                     }
 
@@ -88,7 +88,7 @@ namespace AuthorizationAndAuthenticationProject.Services
                 throw ex;
             }
 
-          
+
 
         }
         public async Task<ApiResult> UserLogin(LoginUser user)
@@ -96,7 +96,6 @@ namespace AuthorizationAndAuthenticationProject.Services
 
             try
             {
-
                 var IsvalidEmail = await _usermanager.FindByEmailAsync(user.Email);
                 var IsValidUser = await _usermanager.CheckPasswordAsync(IsvalidEmail, user.Password);
 
@@ -184,10 +183,10 @@ namespace AuthorizationAndAuthenticationProject.Services
 
                 throw ex;
             }
-           
+
         }
 
-        private string GenerateToken(string name,string Id,string Role,string email)
+        private string GenerateToken(string name, string Id, string Role, string email)
         {
             var securitykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(securitykey, SecurityAlgorithms.HmacSha256);
@@ -202,9 +201,9 @@ namespace AuthorizationAndAuthenticationProject.Services
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:issuer"],
                 audience: _configuration["Jwt:audience"],
-                claims:userclaims,
-                expires:DateTime.Now.AddMinutes(1),
-                signingCredentials:credentials
+                claims: userclaims,
+                expires: DateTime.Now.AddMinutes(1),
+                signingCredentials: credentials
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -213,7 +212,7 @@ namespace AuthorizationAndAuthenticationProject.Services
         private string RefreshToken()
         {
             var refreshtoken = new byte[64];
-            using (var randomnum=RandomNumberGenerator.Create())
+            using (var randomnum = RandomNumberGenerator.Create())
             {
                 randomnum.GetBytes(refreshtoken);
             }

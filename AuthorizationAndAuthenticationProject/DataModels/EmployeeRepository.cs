@@ -1,4 +1,5 @@
 ﻿using AuthorizationAndAuthenticationProject.DataModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.InteropServices;
@@ -9,10 +10,12 @@ namespace PayrollManagementApplication.DataModels
     {
         
         private readonly ApplicationDbContext _context;
-        public EmployeeRepository(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public EmployeeRepository(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
 
             _context = context;
+            _userManager=userManager;
         }
 
         public async Task AddDepartment(Department department)

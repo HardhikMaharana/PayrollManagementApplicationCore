@@ -1,9 +1,10 @@
 ﻿using AuthorizationAndAuthenticationProject.DataModels;
 using Microsoft.AspNetCore.Identity;
+using PayrollManagementApplication.Services;
 
 namespace AuthorizationAndAuthenticationProject.Services
 {
-    public class EmployeeServices
+    public class EmployeeServices:IEmployeeServices
     {
         private readonly ApplicationDbContext _context;
         private readonly RoleManager<IdentityRole> _rolemanager;
