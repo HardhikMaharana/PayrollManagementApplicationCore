@@ -197,10 +197,10 @@ namespace AuthorizationAndAuthenticationProject.Services
 
             var userclaims = new[]
             {
-                new Claim(ClaimTypes.Name,name),
-                new Claim(ClaimTypes.NameIdentifier,Id),
-                new Claim(ClaimTypes.Email,email),
-                new Claim(ClaimTypes.Role,Role)
+                new Claim (JwtRegisteredClaimNames.Name,name??""),
+                new Claim(JwtRegisteredClaimNames.NameId,Id??""),
+                new Claim(JwtRegisteredClaimNames.Email,email),
+                new Claim("role",Role)
             };
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:issuer"],

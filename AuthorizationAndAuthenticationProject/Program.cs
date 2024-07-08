@@ -60,6 +60,7 @@ builder.Services.AddAuthentication(options => {
 
 builder.Services.AddScoped<IApiResult, ApiResult>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IEmployeeServices, EmployeeServices>();
 builder.Services.AddAuthentication();
 
 builder.Services.AddControllers();
@@ -68,7 +69,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //register repository
-builder.Services.AddScoped<EmployeeRepository>();
+builder.Services.AddScoped<DepartmentReposatory>();
 
 var app = builder.Build();
 
