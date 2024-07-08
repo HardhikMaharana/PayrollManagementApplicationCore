@@ -5,6 +5,8 @@ namespace AuthorizationAndAuthenticationProject.Services
     public interface IEmployeeServices
     {
         Task<ApiResult> AddEmployee(EmployeeViewModel emp);
-        Task<ApiResult> GetEmployee(int id);
+        ApiResult GetEmployee(int id);
+        ApiResult UpdateEmployee(EmployeeViewModel emp);
+        ApiResult DeleteEmployee(int id);
     }
 }

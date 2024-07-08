@@ -20,11 +20,11 @@ namespace AuthorizationAndAuthenticationProject.Services
             _userManager = userManager;
         }
 
-        public async Task<ApiResult> GetEmployee(int id)
+        public  ApiResult GetEmployee(int id)
         {
             try
             {
-                var Employees = _context.Employees.Where(w => w.IsActive == true).ToList();
+                var Employees = _context.Employees.Where(w => w.IsActive == true && w.EmployeeId==id).ToList();
 
                 if (Employees == null)
                 {
@@ -41,9 +41,8 @@ namespace AuthorizationAndAuthenticationProject.Services
             {
                 throw ex;
             }
-            return _apiResult;
+            return  _apiResult;
         }
-
         public async Task<ApiResult> AddEmployee(EmployeeViewModel emp)
         {
             Employee employees = new Employee();
@@ -114,8 +113,83 @@ namespace AuthorizationAndAuthenticationProject.Services
             }
             return _apiResult;
         }
+        public  ApiResult UpdateEmployee(EmployeeViewModel emp)
+        {
+            try
+            {
+                var employee = _context.Employees.Where(w => w.IsActive == true && w.EmployeeId == emp.EmpId && w.UserId == emp.Id)
+                                    .FirstOrDefault();
 
+                if (employee != null)
+                {
 
+                }
+                else
+                {
+                    employee.DeptId = emp.DptId;
+                    employee.UpdatedOn = DateTime.Now;
+                    employee.DesignId= emp.DesignId;
+                    employee.UpdatedBy = "Admin";
+                    employee.JoiningDate = emp.JoiningDate;
+                    employee.DOB= emp.DOB;
+                    _context.Employees.Add(employee);
+                    var issaved=_context.SaveChanges();
+
+                    if (issaved > 0)
+                    {
+                        _apiResult.Message = "Employee Updated Successfuly";
+                        _apiResult.IsSuccessful = true;
+                    }
+                    else
+                    {
+                        _apiResult.Message = "Something Went Wrong";
+                        _apiResult.IsSuccessful = false;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return _apiResult;
+        }
+        public ApiResult DeleteEmployee(int id)
+        {
+            try
+            {
+                var employees = _context.Employees.Where(w => w.IsActive == true && w.EmployeeId == id).FirstOrDefault();
+
+                if (employees == null)
+                {
+                    _apiResult.IsSuccessful = false;
+                    _apiResult.Message = "User Not Found";
+                }
+                else
+                {
+                    employees.IsActive = false;
+                    var isSaved = _context.SaveChanges();
+
+                    if (isSaved > 0)
+                    {
+                        _apiResult.IsSuccessful = true;
+                        _apiResult.Message = "Employee Deleted Successfully";
+                    }
+                    else
+                    {
+                        _apiResult.IsSuccessful = false;
+                        _apiResult.Message = "Something Went Wrong";
+                    }
+                   
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return _apiResult;
+        }
 
     }
 }

@@ -33,5 +33,45 @@ namespace PayrollManagementApplication.Controllers
             
 
         }
+        [HttpGet]
+        public async Task<IActionResult> GetEmployee(int id)
+        {
+            var result=_employeeServices.GetEmployee(id);
+            if (result == null || result.IsSuccessful == false)
+            {
+                return BadRequest(result);
+            }
+            else
+            {
+                return Ok(result);
+            }
+        }
+        [HttpPut]
+        public async Task<IActionResult> UpdateEmployee(EmployeeViewModel emp)
+        {
+            var result =  _employeeServices.UpdateEmployee(emp);
+            if (result == null || result.IsSuccessful == false)
+            {
+                return BadRequest(result);
+            }
+            else
+            {
+                return Ok(result);
+            }
+        }
+        [HttpDelete]
+        public async Task<IActionResult> DeleteEmployee(int id)
+        {
+            var result = _employeeServices.DeleteEmployee(id);
+            if (result == null || result.IsSuccessful == false)
+            {
+                return BadRequest(result);
+            }
+            else
+            {
+                return Ok(result);
+            }
+        }
+
     }
 }
