@@ -93,7 +93,7 @@ namespace AuthorizationAndAuthenticationProject.Services
         }
         public async Task<ApiResult> UserLogin(LoginUser user)
         {
-
+            SessionUser session = new SessionUser();
             try
             {
                 var IsvalidEmail = await _usermanager.FindByEmailAsync(user.Email);
@@ -104,12 +104,16 @@ namespace AuthorizationAndAuthenticationProject.Services
                     var UserRole = await _usermanager.GetRolesAsync(IsvalidEmail);
                     api.AccessToken = GenerateToken(IsvalidEmail.UserName, IsvalidEmail.Id, UserRole.First(), IsvalidEmail.Email);
                     api.RefreshToken = RefreshToken();
+                    session.UserName = IsvalidEmail.UserName;
+                    session.Email=IsvalidEmail.Email;
+                    api.Data = session;
                     api.IsSuccessful = true;
                     api.Message = "Login Successful";
-
+                    
                     IsvalidEmail.RefreshTokenExpiry = DateTime.Now.AddMinutes(20);
                     IsvalidEmail.RefteshToken = api.RefreshToken;
                     await _usermanager.UpdateAsync(IsvalidEmail);
+                    
                 }
                 else
                 {

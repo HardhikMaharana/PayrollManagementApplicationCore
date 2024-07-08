@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 
 namespace PayrollManagementApplication.DataModels
 {
-    public class EmployeeRepository
+    public class DepartmentReposatory
     {
         
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public EmployeeRepository(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public DepartmentReposatory(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
 
             _context = context;
@@ -37,13 +37,6 @@ namespace PayrollManagementApplication.DataModels
             {
                 throw ex;
             }
-            
-
-
-
-           // await _context.Set<Department>().AddAsync(department);
-            //await _context.SaveChangesAsync();
-
 
         }
         public async Task<List<Department>> GetListOfDepartment()

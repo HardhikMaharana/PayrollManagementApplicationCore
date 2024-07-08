@@ -7,12 +7,12 @@ namespace AuthorizationAndAuthenticationProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeeController : ControllerBase
+    public class DepartmentController : ControllerBase
     {
         ApplicationDbContext _context;
-        private readonly EmployeeRepository _employeeRepository;
+        private readonly DepartmentReposatory _employeeRepository;
 
-       public EmployeeController(ApplicationDbContext context,EmployeeRepository employeeRepository) { 
+       public DepartmentController(ApplicationDbContext context,DepartmentReposatory employeeRepository) { 
         _context = context;
             _employeeRepository = employeeRepository;
         }
