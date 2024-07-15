@@ -70,6 +70,7 @@ builder.Services.AddSwaggerGen();
 
 //register repository
 builder.Services.AddScoped<DepartmentReposatory>();
+builder.Services.AddScoped<DesignationRepository>();
 
 var app = builder.Build();
 
