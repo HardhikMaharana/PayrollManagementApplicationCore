@@ -1,4 +1,6 @@
 ﻿using AuthorizationAndAuthenticationProject.DataModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PayrollManagementApplication.DataModels;
@@ -7,6 +9,8 @@ namespace AuthorizationAndAuthenticationProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles ="Admin")]
+    [EnableCors("AllowAll")]
     public class DepartmentController : ControllerBase
     {
         ApplicationDbContext _context;

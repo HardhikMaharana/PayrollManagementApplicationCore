@@ -20,6 +20,20 @@ namespace AuthorizationAndAuthenticationProject.Services
             _userManager = userManager;
         }
 
+        public ApiResult GetAllEmployee()
+        {
+            try
+            {
+                var AllEmployees = _context.Employees.Where(w => w.IsActive == true).ToList();
+
+                _apiResult.Data = AllEmployees;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return _apiResult;
+        }
         public  ApiResult GetEmployee(int id)
         {
             try

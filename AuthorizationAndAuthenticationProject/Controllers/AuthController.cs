@@ -31,7 +31,7 @@ namespace AuthorizationAndAuthenticationProject.Controllers
             }
             else
             {
-                return BadRequest(result);
+                return Ok(result);
             }
         }
         [HttpPost("Register")]
@@ -58,7 +58,7 @@ namespace AuthorizationAndAuthenticationProject.Controllers
             }
             else
             {
-                return BadRequest(result); 
+                return Ok(result); 
             }
         }
 

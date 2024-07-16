@@ -8,5 +8,6 @@ namespace AuthorizationAndAuthenticationProject.Services
         ApiResult GetEmployee(int id);
         ApiResult UpdateEmployee(EmployeeViewModel emp);
         ApiResult DeleteEmployee(int id);
+        ApiResult GetAllEmployee();
     }
 }

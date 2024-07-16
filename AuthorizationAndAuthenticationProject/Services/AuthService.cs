@@ -152,17 +152,17 @@ namespace AuthorizationAndAuthenticationProject.Services
             {
                 var principal = await GetPrincipal(refreshtokendetails.AccessToken);
 
-                if (principal?.Identity?.Name == null)
-                {
-                    api.IsSuccessful = false;
-                    api.Message = "Bad Request no User Found";
-                }
-                else
-                {
+                //if (principal?.Identity?.Name == null)
+                //{
+                //    api.IsSuccessful = false;
+                //    api.Message = "Bad Request no User Found";
+                //}
+                //else
+                //{
                     var validUser = await _usermanager.FindByEmailAsync(refreshtokendetails.Email);
                     var UserRole = await _usermanager.GetRolesAsync(validUser);
 
-                    if (validUser.RefteshToken == null || validUser.RefteshToken != refreshtokendetails.RefreshToken || validUser.RefreshTokenExpiry < DateTime.UtcNow)
+                    if (validUser.RefteshToken == null || validUser.RefteshToken != refreshtokendetails.RefreshToken || validUser.RefreshTokenExpiry < DateTime.Now)
                     {
                         api.IsSuccessful = false;
                         api.Message = "Your Session has Expired Please Login";
@@ -173,13 +173,17 @@ namespace AuthorizationAndAuthenticationProject.Services
                         api.RefreshToken = RefreshToken();
                         api.IsSuccessful = true;
                         api.Message = "Login Successful";
-
+                    api.Data = new SessionUser
+                    {
+                        Email = validUser.Email,
+                        UserName = validUser.UserName,
+                    };
                         validUser.RefreshTokenExpiry = DateTime.Now.AddMinutes(20);
                         validUser.RefteshToken = api.RefreshToken;
                         await _usermanager.UpdateAsync(validUser);
                     }
 
-                }
+                //}
                 return api;
             }
             catch (Exception ex)

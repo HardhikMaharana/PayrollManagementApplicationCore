@@ -18,7 +18,10 @@ namespace PayrollManagementApplication.Controllers
         public EmployeeController(IEmployeeServices employeeServices) { 
             _employeeServices = employeeServices;
         }
-
+        [HttpGet("AllEmployees")]
+        public IActionResult GetAllEmployees() { 
+        return Ok(_employeeServices.GetAllEmployee());
+        }
         [HttpPost]
         public async Task<IActionResult> AddEmployee(EmployeeViewModel emp)
         {
