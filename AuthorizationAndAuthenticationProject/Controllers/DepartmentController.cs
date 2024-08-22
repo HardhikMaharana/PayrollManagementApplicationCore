@@ -14,11 +14,11 @@ namespace AuthorizationAndAuthenticationProject.Controllers
     public class DepartmentController : ControllerBase
     {
         ApplicationDbContext _context;
-        private readonly DepartmentReposatory _employeeRepository;
+        private readonly DepartmentReposatory _deptReposatory;
 
-       public DepartmentController(ApplicationDbContext context,DepartmentReposatory employeeRepository) { 
+       public DepartmentController(ApplicationDbContext context,DepartmentReposatory deptReposatory) { 
         _context = context;
-            _employeeRepository = employeeRepository;
+            _deptReposatory = deptReposatory;
         }
 
         //[HttpPost]
@@ -38,7 +38,7 @@ namespace AuthorizationAndAuthenticationProject.Controllers
         [HttpPost]
         public async Task<IActionResult> AddDepartment([FromBody] Department department)
         {
-            await _employeeRepository.AddDepartment(department);
+            await _deptReposatory.AddDepartment(department);
             //var message= new Result { Status = "Employee Created Successfully" };
             return Ok();
 
@@ -47,7 +47,7 @@ namespace AuthorizationAndAuthenticationProject.Controllers
         [HttpGet]
         public async Task<IActionResult> GetListOfDepartment()
         {
-           var employeelist= await _employeeRepository.GetListOfDepartment();
+           var employeelist= await _deptReposatory.GetListOfDepartment();
             //var message= new Result { Status = "Employee Created Successfully" };
             return Ok(employeelist);
 
@@ -56,7 +56,7 @@ namespace AuthorizationAndAuthenticationProject.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDepartmentById([FromRoute] int id)
         {
-            var department = await _employeeRepository.GetDepartmentById(id);
+            var department = await _deptReposatory.GetDepartmentById(id);
             return Ok(department);
         }
 
@@ -64,14 +64,14 @@ namespace AuthorizationAndAuthenticationProject.Controllers
 
         public async Task<IActionResult> UpdateDepartment([FromRoute] int id, [FromBody] Department department)
         {
-            await _employeeRepository.UpdateDepartment(id, department);
+            await _deptReposatory.UpdateDepartment(id, department);
             return Ok();
 
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDepartment([FromRoute] int id)
         {
-            await _employeeRepository.DeleteDepartment(id);
+            await _deptReposatory.DeleteDepartment(id);
             return Ok();
         }
 

@@ -1,5 +1,6 @@
 ﻿using AuthorizationAndAuthenticationProject.DataModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PayrollManagementApplication.DataModels;
 
@@ -20,11 +21,11 @@ namespace AuthorizationAndAuthenticationProject.Services
             _userManager = userManager;
         }
 
-        public ApiResult GetAllEmployee()
+        public async Task<ApiResult> GetAllEmployee()
         {
             try
             {
-                var AllEmployees = _context.Employees.Where(w => w.IsActive == true).ToList();
+                var AllEmployees =await _context.Employees.Where(w => w.IsActive == true).ToListAsync();
 
                 _apiResult.Data = AllEmployees;
             }
@@ -32,13 +33,13 @@ namespace AuthorizationAndAuthenticationProject.Services
             {
                 throw ex;
             }
-            return _apiResult;
+            return  _apiResult;
         }
-        public  ApiResult GetEmployee(int id)
+        public async  Task<ApiResult> GetEmployee(int id)
         {
             try
             {
-                var Employees = _context.Employees.Where(w => w.IsActive == true && w.EmployeeId==id).ToList();
+                var Employees = await _context.Employees.Where(w => w.IsActive == true && w.EmployeeId==id).ToListAsync();
 
                 if (Employees == null)
                 {
@@ -97,10 +98,10 @@ namespace AuthorizationAndAuthenticationProject.Services
                         employees.CreatedOn = DateTime.Now;
                         employees.IsActive = true;
                         employees.CreatedBy = "Admin";
-                        _context.Employees.Add(employees);
+                        _context.Employees.AddAsync(employees);
 
-                        var isSaved = _context.SaveChanges();
-                        if (isSaved > 0)
+                        var isSaved = _context.SaveChangesAsync();
+                        if (await isSaved > 0)
                         {
                             _apiResult.IsSuccessful = true;
                             _apiResult.Message = "Employee Registered Successfuly";
@@ -127,12 +128,12 @@ namespace AuthorizationAndAuthenticationProject.Services
             }
             return _apiResult;
         }
-        public  ApiResult UpdateEmployee(EmployeeViewModel emp)
+        public async Task<ApiResult> UpdateEmployee(EmployeeViewModel emp)
         {
             try
             {
-                var employee = _context.Employees.Where(w => w.IsActive == true && w.EmployeeId == emp.EmpId && w.UserId == emp.Id)
-                                    .FirstOrDefault();
+                var employee = await _context.Employees.Where(w => w.IsActive == true && w.EmployeeId == emp.EmpId && w.UserId == emp.Id)
+                                    .FirstOrDefaultAsync();
 
                 if (employee != null)
                 {
@@ -147,9 +148,9 @@ namespace AuthorizationAndAuthenticationProject.Services
                     employee.JoiningDate = emp.JoiningDate;
                     employee.DOB= emp.DOB;
                     _context.Employees.Add(employee);
-                    var issaved=_context.SaveChanges();
+                    var issaved=_context.SaveChangesAsync();
 
-                    if (issaved > 0)
+                    if (await issaved > 0)
                     {
                         _apiResult.Message = "Employee Updated Successfuly";
                         _apiResult.IsSuccessful = true;
@@ -169,11 +170,11 @@ namespace AuthorizationAndAuthenticationProject.Services
             }
             return _apiResult;
         }
-        public ApiResult DeleteEmployee(int id)
+        public async Task<ApiResult> DeleteEmployee(int id)
         {
             try
             {
-                var employees = _context.Employees.Where(w => w.IsActive == true && w.EmployeeId == id).FirstOrDefault();
+                var employees = await _context.Employees.Where(w => w.IsActive == true && w.EmployeeId == id).FirstOrDefaultAsync();
 
                 if (employees == null)
                 {
@@ -205,5 +206,24 @@ namespace AuthorizationAndAuthenticationProject.Services
             return _apiResult;
         }
 
+        ApiResult IEmployeeServices.GetAllEmployee()
+        {
+            throw new NotImplementedException();
+        }
+
+        ApiResult IEmployeeServices.GetEmployee(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        ApiResult IEmployeeServices.UpdateEmployee(EmployeeViewModel emp)
+        {
+            throw new NotImplementedException();
+        }
+
+        ApiResult IEmployeeServices.DeleteEmployee(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

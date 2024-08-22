@@ -11,35 +11,39 @@ namespace PayrollManagementApplication.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("AllowAll")]
-    [Authorize(Roles ="Admin")]
+    
     public class EmployeeController : ControllerBase
     {
-    private readonly IEmployeeServices _employeeServices;
-        public EmployeeController(IEmployeeServices employeeServices) { 
+        private readonly IEmployeeServices _employeeServices;
+        public EmployeeController(IEmployeeServices employeeServices) {
             _employeeServices = employeeServices;
         }
+
         [HttpGet("AllEmployees")]
-        public IActionResult GetAllEmployees() { 
-        return Ok(_employeeServices.GetAllEmployee());
+        [Authorize(Roles = "Admin")]
+        public IActionResult GetAllEmployees() {
+            return Ok(_employeeServices.GetAllEmployee());
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddEmployee(EmployeeViewModel emp)
         {
             var result = await _employeeServices.AddEmployee(emp);
 
-            if (result == null || result.IsSuccessful==false) {
+            if (result == null || result.IsSuccessful == false) {
                 return BadRequest(result);
             }
-            else{
+            else {
                 return Ok(result);
             }
-            
+
 
         }
-        [HttpGet]
-        public async Task<IActionResult> GetEmployee(int id)
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetEmployee([FromRoute]int id)
         {
-            var result=_employeeServices.GetEmployee(id);
+            var result = _employeeServices.GetEmployee(id);
             if (result == null || result.IsSuccessful == false)
             {
                 return BadRequest(result);
@@ -50,9 +54,10 @@ namespace PayrollManagementApplication.Controllers
             }
         }
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateEmployee(EmployeeViewModel emp)
         {
-            var result =  _employeeServices.UpdateEmployee(emp);
+            var result = _employeeServices.UpdateEmployee(emp);
             if (result == null || result.IsSuccessful == false)
             {
                 return BadRequest(result);
@@ -62,8 +67,9 @@ namespace PayrollManagementApplication.Controllers
                 return Ok(result);
             }
         }
-        [HttpDelete]
-        public async Task<IActionResult> DeleteEmployee(int id)
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteEmployee([FromRoute]int id)
         {
             var result = _employeeServices.DeleteEmployee(id);
             if (result == null || result.IsSuccessful == false)
