@@ -8,7 +8,7 @@ using PayrollManagementApplication.DataModels;
 
 namespace PayrollManagementApplication.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]/[action]")]
     [ApiController]
     [EnableCors("AllowAll")]
     
@@ -18,11 +18,11 @@ namespace PayrollManagementApplication.Controllers
         public EmployeeController(IEmployeeServices employeeServices) {
             _employeeServices = employeeServices;
         }
-
-        [HttpGet("AllEmployees")]
         [Authorize(Roles = "Admin")]
-        public IActionResult GetAllEmployees() {
-            return Ok(_employeeServices.GetAllEmployee());
+        [HttpGet("AllEmployees")]
+   
+        public async Task<IActionResult> GetAllEmployees() {
+            return Ok(await _employeeServices.GetAllEmployee());
         }
         [HttpPost]
         [Authorize(Roles = "Admin")]
@@ -43,7 +43,7 @@ namespace PayrollManagementApplication.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetEmployee([FromRoute]int id)
         {
-            var result = _employeeServices.GetEmployee(id);
+            var result =await _employeeServices.GetEmployee(id);
             if (result == null || result.IsSuccessful == false)
             {
                 return BadRequest(result);
@@ -57,7 +57,7 @@ namespace PayrollManagementApplication.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateEmployee(EmployeeViewModel emp)
         {
-            var result = _employeeServices.UpdateEmployee(emp);
+            var result = await _employeeServices.UpdateEmployee(emp);
             if (result == null || result.IsSuccessful == false)
             {
                 return BadRequest(result);
@@ -71,7 +71,7 @@ namespace PayrollManagementApplication.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteEmployee([FromRoute]int id)
         {
-            var result = _employeeServices.DeleteEmployee(id);
+            var result =await _employeeServices.DeleteEmployee(id);
             if (result == null || result.IsSuccessful == false)
             {
                 return BadRequest(result);

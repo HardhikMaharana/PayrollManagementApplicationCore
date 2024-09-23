@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.ActionConstraints;
 namespace AuthorizationAndAuthenticationProject.Controllers
 {
     [EnableCors("AllowAll")]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]/[action]")]
     [ApiController]
  
     public class AuthController : ControllerBase
@@ -19,7 +19,7 @@ namespace AuthorizationAndAuthenticationProject.Controllers
             _authService = authService;
         }
         [AllowAnonymous]
-        [HttpPost("Login")]
+        [HttpPost]
     
         public async  Task<IActionResult> Login(LoginUser LoginDetails)
         {
@@ -34,7 +34,7 @@ namespace AuthorizationAndAuthenticationProject.Controllers
                 return Ok(result);
             }
         }
-        [HttpPost("Register")]
+        [HttpPost]
         public async Task<IActionResult> Register(RegisterUser Register)
         {
             var result=await _authService.UserRegistration(Register);
@@ -48,7 +48,7 @@ namespace AuthorizationAndAuthenticationProject.Controllers
             }
 
         }
-        [HttpPost("RefreshToken")]
+        [HttpPost]
         public  async Task<IActionResult> RefreshToken(RefreshTokenmodel refreshtoken)
         {
             var result= await _authService.ValidateRefreshToken(refreshtoken);

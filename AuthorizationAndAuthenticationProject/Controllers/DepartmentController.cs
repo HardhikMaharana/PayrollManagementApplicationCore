@@ -7,7 +7,7 @@ using PayrollManagementApplication.DataModels;
 
 namespace AuthorizationAndAuthenticationProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     [Authorize(Roles ="Admin")]
     [EnableCors("AllowAll")]

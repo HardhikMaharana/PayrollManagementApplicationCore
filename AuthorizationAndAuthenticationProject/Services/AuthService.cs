@@ -58,7 +58,7 @@ namespace AuthorizationAndAuthenticationProject.Services
                         await _usermanager.AddToRoleAsync(identityUser, "Admin");
 
                         api.IsSuccessful = true;
-                        api.Message = "Employee Registered Succcessfully";
+                        api.Message = "Admin Registered Succcessfully";
                         api.StatusCode = 200;
                     }
                     else
@@ -178,7 +178,7 @@ namespace AuthorizationAndAuthenticationProject.Services
                         Email = validUser.Email,
                         UserName = validUser.UserName,
                     };
-                        validUser.RefreshTokenExpiry = DateTime.Now.AddMinutes(20);
+                        validUser.RefreshTokenExpiry = DateTime.Now.AddHours(1);
                         validUser.RefteshToken = api.RefreshToken;
                         await _usermanager.UpdateAsync(validUser);
                     }
@@ -210,7 +210,7 @@ namespace AuthorizationAndAuthenticationProject.Services
                 issuer: _configuration["Jwt:issuer"],
                 audience: _configuration["Jwt:audience"],
                 claims: userclaims,
-                expires: DateTime.Now.AddMinutes(1),
+                expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: credentials
                 );
 

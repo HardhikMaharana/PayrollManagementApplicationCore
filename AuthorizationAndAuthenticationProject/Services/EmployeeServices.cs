@@ -8,7 +8,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace AuthorizationAndAuthenticationProject.Services
 {
-    public class EmployeeServices : IEmployeeServices
+    public class EmployeeServices :IEmployeeServices
     {
         private readonly ApiResult _apiResult = new ApiResult();
         private readonly ApplicationDbContext _context;
@@ -25,7 +25,7 @@ namespace AuthorizationAndAuthenticationProject.Services
         {
             try
             {
-                var AllEmployees =await _context.Employees.Where(w => w.IsActive == true).ToListAsync();
+                var AllEmployees = await _context.Employees.Where(w => w.IsActive == true).ToListAsync();
 
                 _apiResult.Data = AllEmployees;
             }
@@ -33,13 +33,13 @@ namespace AuthorizationAndAuthenticationProject.Services
             {
                 throw ex;
             }
-            return  _apiResult;
+            return _apiResult;
         }
-        public async  Task<ApiResult> GetEmployee(int id)
+        public async Task<ApiResult> GetEmployee(int id)
         {
             try
             {
-                var Employees = await _context.Employees.Where(w => w.IsActive == true && w.EmployeeId==id).ToListAsync();
+                var Employees = await _context.Employees.Where(w => w.IsActive == true && w.EmployeeId == id).ToListAsync();
 
                 if (Employees == null)
                 {
@@ -56,7 +56,7 @@ namespace AuthorizationAndAuthenticationProject.Services
             {
                 throw ex;
             }
-            return  _apiResult;
+            return _apiResult;
         }
         public async Task<ApiResult> AddEmployee(EmployeeViewModel emp)
         {
@@ -100,8 +100,8 @@ namespace AuthorizationAndAuthenticationProject.Services
                         employees.CreatedBy = "Admin";
                         _context.Employees.AddAsync(employees);
 
-                        var isSaved = _context.SaveChangesAsync();
-                        if (await isSaved > 0)
+                        var isSaved = await _context.SaveChangesAsync();
+                        if (isSaved > 0)
                         {
                             _apiResult.IsSuccessful = true;
                             _apiResult.Message = "Employee Registered Successfuly";
@@ -143,12 +143,12 @@ namespace AuthorizationAndAuthenticationProject.Services
                 {
                     employee.DeptId = emp.DptId;
                     employee.UpdatedOn = DateTime.Now;
-                    employee.DesignId= emp.DesignId;
+                    employee.DesignId = emp.DesignId;
                     employee.UpdatedBy = "Admin";
                     employee.JoiningDate = emp.JoiningDate;
-                    employee.DOB= emp.DOB;
+                    employee.DOB = emp.DOB;
                     _context.Employees.Add(employee);
-                    var issaved=_context.SaveChangesAsync();
+                    var issaved = _context.SaveChangesAsync();
 
                     if (await issaved > 0)
                     {
@@ -196,7 +196,7 @@ namespace AuthorizationAndAuthenticationProject.Services
                         _apiResult.IsSuccessful = false;
                         _apiResult.Message = "Something Went Wrong";
                     }
-                   
+
                 }
             }
             catch (Exception ex)
@@ -206,24 +206,5 @@ namespace AuthorizationAndAuthenticationProject.Services
             return _apiResult;
         }
 
-        ApiResult IEmployeeServices.GetAllEmployee()
-        {
-            throw new NotImplementedException();
-        }
-
-        ApiResult IEmployeeServices.GetEmployee(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        ApiResult IEmployeeServices.UpdateEmployee(EmployeeViewModel emp)
-        {
-            throw new NotImplementedException();
-        }
-
-        ApiResult IEmployeeServices.DeleteEmployee(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
